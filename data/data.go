@@ -1,6 +1,7 @@
 package data
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/glebarez/sqlite"
@@ -58,27 +59,36 @@ func Init(file, server, database, username, password string, port int) {
 		}
 	}
 
-	CreateApiAdmin()
+	var numApiAdmin int64
+	db.Model(&Apiadmin{}).Count(&numApiAdmin)
+	if numApiAdmin == 0 {
+		// Create an initial Apiadmin with the first employee
+		_, err := CreateApiAdmin(1)
+		if err != nil {
+			panic("failed to create initial Apiadmin")
+		}
+	}
 }
 
-func CreateApiAdmin() {
-	employee := GetEmployeeById(1)
+func CreateApiAdmin(employeeId int) (*Apiadmin, error) {
+	employee := GetEmployeeById(employeeId)
 	if employee == nil {
-		return
+		return nil, fmt.Errorf("Employee not found")
 	}
-	me := &Apiadmin{
+	apiadmin := &Apiadmin{
 		EmployeeID: uint(employee.Id),
 		SuperUser:  true,
 		AdminFrom:  time.Now(),
 		AdminTo:    time.Now().AddDate(1, 0, 0),
-		ExtraInfo:  "Kingarnas king på att administera API:er",
+		ExtraInfo:  "New API Admin",
 	}
-	db.Create(me)
+	result := db.Create(apiadmin)
+	return apiadmin, result.Error
 }
 
 func GetApiAdmin() *Apiadmin {
 	var apiadmin Apiadmin
-	db.Preload("Employee").First(&apiadmin, "employee_id = ?", 1)
+	db.Preload("Employee").Order("id desc").First(&apiadmin)
 	if apiadmin.ID == 0 {
 		return nil
 	}

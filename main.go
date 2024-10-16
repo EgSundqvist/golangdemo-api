@@ -111,6 +111,24 @@ func handleGetApiAdmin(c *gin.Context) {
 	c.JSON(http.StatusOK, me)
 }
 
+func handleCreateApiAdmin(c *gin.Context) {
+	var request struct {
+		EmployeeID int `json:"employeeId"`
+	}
+	if err := c.BindJSON(&request); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid JSON"})
+		return
+	}
+
+	apiadmin, err := data.CreateApiAdmin(request.EmployeeID)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusCreated, apiadmin)
+}
+
 var config Config
 
 func main() {
@@ -127,12 +145,15 @@ func main() {
 	r.LoadHTMLGlob("templates/*")
 	r.GET("/", handleStart)
 	r.GET("/api/about", handleAbout)
+
 	r.GET("/api/employee", handleGetAllEmployees)
 	r.GET("/api/employee/:id", handleGetEmployeeById)
 	r.POST("/api/employee", handleCreateEmployee)
 	r.PUT("/api/employee/:id", handleUpdateEmployee)
 	r.DELETE("/api/employee/:id", handleDeleteEmployee)
+
 	r.GET("/api/apiadmin", handleGetApiAdmin)
+	r.POST("/api/apiadmin", handleCreateApiAdmin)
 
 	r.Run()
 }
