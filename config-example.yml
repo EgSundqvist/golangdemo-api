@@ -1,0 +1,19 @@
+# Database credentials
+database:
+  # antingen denna
+  file: "example.db"
+  # eller alla dessa (om file är blankt)
+  sql-user: "" #
+  sql-pass: ""
+  sql-server: "666.66.66.1"
+  sql-database: "Example"
+  sql-port: 6666
+
+redis:
+  server: "localhost:6666"
+
+sso:
+  clientId: "Example"
+  clientSecret: "SuperSecretxxxxXXXxxxXXXxxxx"
+  baseAddress: "https://localhost:6666/"
+  backBaseAddress: "https://localhost:9999/"
