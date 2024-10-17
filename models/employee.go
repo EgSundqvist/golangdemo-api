@@ -1,4 +1,4 @@
-package data
+package models
 
 type Employee struct {
 	Id   int
@@ -8,7 +8,6 @@ type Employee struct {
 }
 
 // MEDLEMSFUNKTION
-// emp.CalculateSalary()
 func (emp Employee) CalculateSalary() int {
 	if emp.Name == "Stefan" {
 		return 1000

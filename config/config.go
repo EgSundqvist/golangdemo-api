@@ -1,4 +1,4 @@
-package main
+package config
 
 import (
 	"fmt"
@@ -30,17 +30,17 @@ type Config struct {
 	} `yaml:"sso"`
 }
 
-func readConfig(cfg *Config) {
+func ReadConfig(cfg *Config) {
 	readFile(cfg)
 	readEnv(cfg)
-	fmt.Printf("%+v", cfg)
+	fmt.Printf("%+v\n", cfg) //Debug utskrift
 }
 
 func readFile(cfg *Config) {
-	fileName := "config.yml"
+	fileName := "config/config.yml"
 	s := os.Getenv("RUNENVIRONMENT")
 	if len(s) > 0 {
-		fileName = "config" + s + ".yml"
+		fileName = "config/config" + s + ".yml"
 	}
 
 	f, _ := os.Open(fileName)

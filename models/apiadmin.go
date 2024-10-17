@@ -1,8 +1,8 @@
-package data
+package models
 
 import "time"
 
-type Apiadmin struct {
+type ApiAdmin struct {
 	ID         uint `gorm:"primaryKey"`
 	EmployeeID uint
 	Employee   Employee `gorm:"foreignKey:EmployeeID"`
