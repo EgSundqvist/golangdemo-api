@@ -1,0 +1,9 @@
+# Ignore yml config files
+config.yml
+
+# Ignore node_modules
+node_modules/
+dist/
+
+# Ignore .env files
+.env
