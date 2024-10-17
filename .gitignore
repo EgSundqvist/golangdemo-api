@@ -7,3 +7,6 @@ dist/
 
 # Ignore .env files
 .env
+
+# calls
+calls.rest
